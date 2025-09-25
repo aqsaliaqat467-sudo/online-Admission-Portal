@@ -14,7 +14,6 @@ import Login from './Pages/Login';
 import Password from './Pages/Password';
 import Privacy from './Pages/Privacy';
 import Privacypolicy from './Pages/Privacypolicy';
-import Profile from './Pages/Profile';
 import Setting from './Pages/Setting';
 import Signup from './Pages/Signup';
 import Splash from './Pages/Splash';
@@ -36,6 +35,7 @@ import HomeStack from './Pages/HomeStack';
 import Intake from './Pages/Intake';
 import MyApplications from './Pages/MyApplications';
 import Notification from './Pages/Notification';
+import Profile12 from './Pages/Profile12';
 import Search from './Pages/Search';
 const Stack = createNativeStackNavigator();
 
@@ -62,7 +62,7 @@ const StudentStack = () => {
       <Stack.Screen name="Chatsupport" component={Chatsupport} />
       <Stack.Screen name="Privacypolicy" component={Privacypolicy} />
       <Stack.Screen name="Terms" component={Terms} />
-      <Stack.Screen name="Profile12" component={Profile} />
+      <Stack.Screen name="Profile12" component={Profile12} />
       <Stack.Screen name="Eprofile" component={Eprofile} />
       {/* <Stack.Screen name="Chat" component={Chat} /> */}
       <Stack.Screen name="ADP" component={ADP} />

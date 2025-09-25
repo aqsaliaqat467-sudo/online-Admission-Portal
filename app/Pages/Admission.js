@@ -45,28 +45,28 @@ const Admission = () => {
         await addData("admissions", { date, program, name, cnic, fatherName, fatherCnic, dob, fatherOccupation, maritalStatus, religion, permanentAddress, postalAddress, cellPhone, resPhone, matricObtained, matricTotal, matricPercent, fscObtained, fscTotal, fscPercent, subjects, activities, imageUrl });
     };
     const handleImagePicker = async () => {
-            try {
-                let result = await ImagePicker.launchImageLibraryAsync({
-                    mediaTypes: ImagePicker.MediaType,
-                    allowsEditing: true,
-                    quality: 1,
-                });
-    
-    
-                if (!result.canceled) {
-                    const imageUri = result.assets[0].uri;
-                    const uploadedImageUrl = await uploadImageToCloudinary(imageUri)
-                    setImageUrl(uploadedImageUrl)
-                    alert(uploadedImageUrl)
-                }
-    
-    
-            } catch (error) {
-    
-                console.log("Error picking image:", error);
-    
+        try {
+            let result = await ImagePicker.launchImageLibraryAsync({
+                mediaTypes: ImagePicker.MediaType,
+                allowsEditing: true,
+                quality: 1,
+            });
+
+
+            if (!result.canceled) {
+                const imageUri = result.assets[0].uri;
+                const uploadedImageUrl = await uploadImageToCloudinary(imageUri)
+                setImageUrl(uploadedImageUrl)
+                alert(uploadedImageUrl)
             }
+
+
+        } catch (error) {
+
+            console.log("Error picking image:", error);
+
         }
+    }
     return (
         <View style={{ height: "100%", width: "100%", backgroundColor: "#ffffffff" }}>
             <ScrollView style={{ height: "100%" }}>
@@ -96,14 +96,14 @@ const Admission = () => {
                             value={date}
                             style={{ height: 40, width: "190%", marginStart: 10, borderWidth: 1, borderColor: "#d1d5db", borderRadius: 10, backgroundColor: "#f8fafc" }} />
                     </View>
-                   <View style={{ width: 100, height: 100, borderRadius: 50, backgroundColor: '#F3D5C6', alignItems: 'center', justifyContent: 'center' }}>
-                    <TouchableOpacity onPress={handleImagePicker}>
-                        {imageUrl != "" ?
-                            <Image source={{ uri: imageUrl }} style={{ width: 100, height: 100, borderRadius: 50 }} />
-                            : <Ionicons name="camera-outline" size={40} color="#000" />
-                        }
-                    </TouchableOpacity>
-                </View>
+                    <View style={{ width: "40%", height: 75, borderColor: "#c3cbd6ff", borderRadius: 10, backgroundColor: "#f5f6f7ff", borderWidth: 1, alignItems: 'center', justifyContent: 'center', marginRight: 10 }}>
+                        <TouchableOpacity onPress={handleImagePicker}>
+                            {imageUrl != "" ?
+                                <Image source={{ uri: imageUrl }} style={{ width: "100%", height: 100, borderRadius: 10 }} />
+                                : <Ionicons name="camera-outline" size={40} color="#000" />
+                            }
+                        </TouchableOpacity>
+                    </View>
                 </View>
                 <View>
                     <Text style={{ fontSize: 12, marginStart: 15 }}>Application for admission to</Text>

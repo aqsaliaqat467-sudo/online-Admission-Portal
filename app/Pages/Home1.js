@@ -1,6 +1,6 @@
-import { AntDesign, FontAwesome6, Ionicons } from "@expo/vector-icons";
+import { FontAwesome6, Ionicons } from "@expo/vector-icons";
 import React, { useEffect, useState } from 'react';
-import { Image, ImageBackground, ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import { ImageBackground, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { getAllData } from "../Helper/FirebaseHelper";
 
 const Home1 = ({ navigation }) => {
