@@ -1,4 +1,4 @@
-import { FontAwesome6, Ionicons } from "@expo/vector-icons";
+import { AntDesign, FontAwesome6, Ionicons } from "@expo/vector-icons";
 import React, { useEffect, useState } from 'react';
 import { ImageBackground, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { getAllData } from "../Helper/FirebaseHelper";
@@ -7,11 +7,11 @@ const Home1 = ({ navigation }) => {
     const [data, setData] = useState([]);
     const getDataFromDatabase = async () => {
 
-        const cData = await getAllData("categories");  // Firestore se data fetch
+        const clgData = await getAllData("colleges");  // Firestore se data fetch
 
-        console.log("this is c data", cData);
+        console.log("this is c data", clgData);
 
-        setData(cData)
+        setData(clgData)
 
     };
     useEffect(() => {
@@ -52,7 +52,7 @@ const Home1 = ({ navigation }) => {
                         {data?.map((item, index) => (
 
                             <View style={{ height: 150, width: '40%', backgroundColor: "#d7d7d7ff", marginTop: 40, marginLeft: 25 }}>
-                                <Image source={require('./images.png')} style={{ width: '100%', height: 110, alignSelf: 'center' }}></Image>
+                                {/* <Image source={require('./images.png')} style={{ width: '100%', height: 110, alignSelf: 'center' }}></Image> */}
                                 <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
                                     <Text style={{ fontWeight: 'bold', marginStart: 8, marginTop: 9 }}>{item.title}</Text>
                                     <TouchableOpacity onPress={() => navigation.navigate("College")}

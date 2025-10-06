@@ -21,6 +21,7 @@ const Profile = ({ navigation }) => {
         await addData("customer", { firstname, lastname, phonenumber, email, imageUrl });
     };
     const handleImagePicker = async () => {
+        alert("xyz")
         try {
             let result = await ImagePicker.launchImageLibraryAsync({
                 mediaTypes: ImagePicker.MediaType,

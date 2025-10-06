@@ -67,7 +67,7 @@ const Eprofile = ({ navigation }) => {
                 </TouchableOpacity>
                 <TouchableOpacity style={{ flexDirection: "row", alignItems: "center", padding: 15, }} >
                     <Ionicons name="log-out-outline" size={20} color="gray" />
-                    <Text style={{ marginLeft: 15, fontSize: 16, color: "#000" }} onPress={handleLogout} >Log out</Text>
+                    <Text style={{ marginLeft: 15, fontSize: 16, color: "#000" }} onPress={() => navigation.navigate("handlelogout")} >Log out</Text>
                 </TouchableOpacity>
             </View>
         </View>
