@@ -8,7 +8,7 @@ import { setRole } from '../redux/Slices/HomeDataSlice';
 const Eprofile = ({ navigation }) => {
     const dispatch = useDispatch();
 
-    const handleLogout = () => {
+    const handlelogout = () => {
         dispatch(setRole(""));
     };
     return (
@@ -65,9 +65,9 @@ const Eprofile = ({ navigation }) => {
                     <Text style={{ marginLeft: 15, fontSize: 16, color: "#000" }}>Delete Account</Text>
                     <Ionicons name="chevron-forward" size={18} color="gray" style={{ marginLeft: "auto" }} />
                 </TouchableOpacity>
-                <TouchableOpacity style={{ flexDirection: "row", alignItems: "center", padding: 15, }} >
+                <TouchableOpacity  onPress={handlelogout}  style={{ flexDirection: "row", alignItems: "center", padding: 15, }} >
                     <Ionicons name="log-out-outline" size={20} color="gray" />
-                    <Text style={{ marginLeft: 15, fontSize: 16, color: "#000" }} onPress={() => navigation.navigate("handlelogout")} >Log out</Text>
+                    <Text style={{ marginLeft: 15, fontSize: 16, color: "#000" }}>Log out</Text>
                 </TouchableOpacity>
             </View>
         </View>

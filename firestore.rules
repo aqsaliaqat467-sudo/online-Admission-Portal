@@ -1,0 +1,75 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // 🔹 Users collection
+    match /users/{userId} {
+      allow create: if true;
+      allow read, update, delete: if request.auth != null && request.auth.uid == userId;
+    }
+
+    // 🔹 Colleges collection (UPDATED - Allow public read for approved colleges)
+    match /colleges/{collegeId} {
+      // Allow authenticated users to create their own college document
+      allow create: if request.auth != null && request.auth.uid == collegeId;
+      
+      // Allow ANYONE to read approved colleges (for student browsing)
+      // This allows students to view colleges without logging in
+      allow read: if resource.data.status == 'approved' || 
+                     (request.auth != null && request.auth.uid == collegeId);
+      
+      // Allow colleges to update their own data (for profile updates)
+      allow update: if request.auth != null && request.auth.uid == collegeId;
+      
+      // Allow colleges to delete their own data
+      allow delete: if request.auth != null && request.auth.uid == collegeId;
+    }
+
+    // 🔹 Courses collection
+    match /courses/{courseId} {
+      // Allow colleges to create courses
+      allow create: if request.auth != null && 
+        request.auth.uid == request.resource.data.collegeId;
+      
+      // Allow ANYONE to read courses (for public browsing)
+      allow read: if true;
+      
+      // Allow colleges to update their own courses
+      allow update: if request.auth != null && 
+        request.auth.uid == resource.data.collegeId;
+      
+      // Allow colleges to delete their own courses
+      allow delete: if request.auth != null && 
+        request.auth.uid == resource.data.collegeId;
+    }
+
+    // 🔹 Applications collection
+    match /applications/{applicationId} {
+      // Allow anyone to create applications (students applying)
+      allow create: if true;
+      
+      // Allow authenticated users to read their own applications
+      allow read: if request.auth != null && 
+        (request.auth.uid == resource.data.studentId || 
+         request.auth.uid == resource.data.collegeId);
+      
+      // Allow colleges to update application status
+      allow update: if request.auth != null && 
+        request.auth.uid == resource.data.collegeId;
+    }
+
+    // 🔹 Admissions collection (LEGACY - keeping for compatibility)
+    match /admissions/{admissionId} {
+      allow create: if true;
+      allow read, update, delete: if request.auth != null && 
+        request.auth.uid == resource.data.userId;
+    }
+
+    // 🔹 Public data
+    match /public/{docId} {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
+  }
+}
