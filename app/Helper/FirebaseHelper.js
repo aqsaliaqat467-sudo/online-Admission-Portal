@@ -22,9 +22,9 @@ export const addData = async (collectionName, data) => {
         return docRef.id;
     } catch (e) {
         console.error("Error adding document: ", e);
+        throw e;
     }
 };
-
 
 // ✅ Get all data
 export const getAllData = async (collectionName) => {
@@ -37,6 +37,7 @@ export const getAllData = async (collectionName) => {
         return data;
     } catch (e) {
         console.error("Error getting documents: ", e);
+        throw e;
     }
 };
 
@@ -53,6 +54,7 @@ export const getDataById = async (collectionName, id) => {
         }
     } catch (e) {
         console.error("Error getting document: ", e);
+        throw e;
     }
 };
 
@@ -62,8 +64,10 @@ export const updateData = async (collectionName, id, newData) => {
         const docRef = doc(db, collectionName, id);
         await updateDoc(docRef, newData);
         console.log("Document updated successfully");
+        return { success: true };
     } catch (e) {
         console.error("Error updating document: ", e);
+        throw e;
     }
 };
 
@@ -72,8 +76,10 @@ export const deleteData = async (collectionName, id) => {
     try {
         await deleteDoc(doc(db, collectionName, id));
         console.log("Document deleted successfully");
+        return { success: true };
     } catch (e) {
         console.error("Error deleting document: ", e);
+        throw e;
     }
 };
 
@@ -84,10 +90,8 @@ export const deleteData = async (collectionName, id) => {
 // ✅ Sign Up
 export const handleSignUp = async (email, password, extraData = {}) => {
     try {
-
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
         const user = userCredential.user;
-
 
         const userData = {
             uid: user.uid,
@@ -95,7 +99,6 @@ export const handleSignUp = async (email, password, extraData = {}) => {
             createdAt: new Date().toISOString(),
             ...extraData, // merge additional data (e.g. name, phone, etc.)
         };
-
 
         await setDoc(doc(db, "users", user.uid), userData);
 
@@ -138,34 +141,46 @@ export const logout = async () => {
         throw error;
     }
 };
+
+//--------------------------------
+// 🔹 Cloudinary Upload Service
+//--------------------------------
+
+// ✅ Upload Image to Cloudinary
 export const uploadImageToCloudinary = async (imageUri) => {
-    const CLOUD_NAME = "drrr99dz9";
+    const CLOUD_NAME = "dwvcbnb3f";
     const UPLOAD_PRESET = "react_native_uploads";
 
-
     try {
-
+        console.log("Uploading image:", imageUri);
 
         let data = new FormData();
         data.append("file", {
             uri: imageUri,
             type: "image/jpeg",
-            name: "upload.jpg",
+            name: `upload_${new Date().getTime()}.jpg`,
         });
         data.append("upload_preset", UPLOAD_PRESET);
 
         const res = await fetch(
-            ` https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`, {
-            method: "POST",
-            body: data,
-        }
+            `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`,
+            {
+                method: "POST",
+                body: data,
+            }
         );
 
         const result = await res.json();
+        
+        if (result.error) {
+            console.error("Cloudinary error:", result.error);
+            throw new Error(result.error.message);
+        }
 
+        console.log("Upload successful:", result.secure_url);
         return result.secure_url; // 🔥 Cloudinary hosted URL
     } catch (err) {
-        console.error("Cloudinary upload failed", err);
+        console.error("Cloudinary upload failed:", err);
         throw err;
     }
 };

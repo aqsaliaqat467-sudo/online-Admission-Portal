@@ -244,7 +244,10 @@ const College = ({ navigation, route }) => {
                                 </View>
 
                                 {/* Apply Button */}
-                                <TouchableOpacity style={styles.applyButton}>
+                                <TouchableOpacity 
+                                    style={styles.applyButton}
+                                    onPress={() => navigation.navigate('AdmissionNew', { course, college })}
+                                >
                                     <Text style={styles.applyButtonText}>Apply Now</Text>
                                     <Ionicons name="arrow-forward" size={18} color="#fff" />
                                 </TouchableOpacity>

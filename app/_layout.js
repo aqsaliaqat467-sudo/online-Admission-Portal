@@ -2,6 +2,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Provider, useSelector } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import Admission from './Pages/Admission';
+import AdmissionNew from './Pages/AdmissionNew';
 import BS from './Pages/BS';
 import Cdetails from './Pages/Cdetails';
 import Chatsupport from './Pages/Chatsupport';
@@ -57,6 +58,7 @@ const StudentStack = () => {
       <Stack.Screen name="Delete" component={Delete} />
       <Stack.Screen name="Password" component={Password} />
       <Stack.Screen name="Admission" component={Admission} />
+      <Stack.Screen options={{ headerShown: false }} name="AdmissionNew" component={AdmissionNew} />
       <Stack.Screen name="Stories" component={Stories} />
       <Stack.Screen name="Clgprofile" component={Clgprofile} />
       <Stack.Screen name="Chatsupport" component={Chatsupport} />

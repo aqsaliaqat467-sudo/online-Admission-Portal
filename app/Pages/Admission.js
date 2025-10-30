@@ -1,18 +1,20 @@
-import Fontisto from '@expo/vector-icons/Fontisto';
-import Ionicons from '@expo/vector-icons/Ionicons';
+import { Ionicons } from '@expo/vector-icons';
 import * as ImagePicker from "expo-image-picker";
+import { addDoc, collection } from 'firebase/firestore';
 import { useState } from 'react';
 import { Image, ScrollView, Text, TextInput, TouchableOpacity, View } from "react-native";
-import { addData, uploadImageToCloudinary } from '../Helper/FirebaseHelper';
+import { db } from '../../Firebase';
+import { uploadImageToCloudinary } from '../Helper/FirebaseHelper';
 
+const Admission = ({ navigation, route }) => {
+    // Get course and college data from navigation params
+    const course = route?.params?.course;
+    const college = route?.params?.college;
 
-
-const Admission = () => {
     const [date, setDate] = useState("12/10/2025");
     const [program, setProgram] = useState("Computer Science");
     const [name, setName] = useState("Aqsa Liaqat");
     const [cnic, setCnic] = useState("");
-    const [fatherName, setFatherName] = useState("Liaqat Hayat");
     const [fatherCnic, setFatherCnic] = useState("");
     const [dob, setDob] = useState("04/05/2002");
     const [fatherOccupation, setFatherOccupation] = useState("Civil Engineer");
@@ -42,7 +44,7 @@ const Admission = () => {
             return
         }
 
-        await addData("admissions", { date, program, name, cnic, fatherName, fatherCnic, dob, fatherOccupation, maritalStatus, religion, permanentAddress, postalAddress, cellPhone, resPhone, matricObtained, matricTotal, matricPercent, fscObtained, fscTotal, fscPercent, subjects, activities, imageUrl });
+        await addDoc(collection(db, "admissions"), { date, program, name, cnic, fatherName, fatherCnic, dob, fatherOccupation, maritalStatus, religion, permanentAddress, postalAddress, cellPhone, resPhone, matricObtained, matricTotal, matricPercent, fscObtained, fscTotal, fscPercent, subjects, activities, imageUrl });
     };
     const handleImagePicker = async () => {
         try {
