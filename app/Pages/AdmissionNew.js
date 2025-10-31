@@ -4,6 +4,7 @@ import * as ImagePicker from "expo-image-picker";
 import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
 import { useState } from 'react';
 import { ActivityIndicator, Alert, Image, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { useSelector } from 'react-redux';
 import { db } from '../../Firebase';
 import { uploadImageToCloudinary } from '../Helper/FirebaseHelper';
 
@@ -11,41 +12,44 @@ const AdmissionNew = ({ navigation, route }) => {
     // Get course and college data from navigation params
     const course = route?.params?.course;
     const college = route?.params?.college;
+    
+    // Get user from Redux state
+    const user = useSelector((state) => state.user);
 
     // 🔹 Personal Information
-    const [firstName, setFirstName] = useState('');
-    const [lastName, setLastName] = useState('');
-    const [email, setEmail] = useState('');
-    const [phone, setPhone] = useState('');
-    const [dateOfBirth, setDateOfBirth] = useState('');
-    const [gender, setGender] = useState('');
-    const [nationality, setNationality] = useState('');
+    const [firstName, setFirstName] = useState('Ahmed');
+    const [lastName, setLastName] = useState('Khan');
+    const [email, setEmail] = useState('ahmed.khan@example.com');
+    const [phone, setPhone] = useState('0300-1234567');
+    const [dateOfBirth, setDateOfBirth] = useState('15/05/2002');
+    const [gender, setGender] = useState('Male');
+    const [nationality, setNationality] = useState('Pakistani');
 
     // 🔹 Previous Education
-    const [previousEducation, setPreviousEducation] = useState('');
-    const [previousInstitution, setPreviousInstitution] = useState('');
-    const [previousYear, setPreviousYear] = useState('');
-    const [previousGrade, setPreviousGrade] = useState('');
+    const [previousEducation, setPreviousEducation] = useState('Intermediate');
+    const [previousInstitution, setPreviousInstitution] = useState('Government College University');
+    const [previousYear, setPreviousYear] = useState('2023');
+    const [previousGrade, setPreviousGrade] = useState('85%');
 
     // 🔹 Address Details
-    const [address, setAddress] = useState('');
-    const [city, setCity] = useState('');
-    const [state, setState] = useState('');
-    const [country, setCountry] = useState('');
-    const [postalCode, setPostalCode] = useState('');
+    const [address, setAddress] = useState('House 123, Street 45, Model Town');
+    const [city, setCity] = useState('Lahore');
+    const [state, setState] = useState('Punjab');
+    const [country, setCountry] = useState('Pakistan');
+    const [postalCode, setPostalCode] = useState('54000');
 
     // 🔹 Emergency Contact
-    const [emergencyContactName, setEmergencyContactName] = useState('');
-    const [emergencyContactPhone, setEmergencyContactPhone] = useState('');
-    const [emergencyContactRelation, setEmergencyContactRelation] = useState('');
+    const [emergencyContactName, setEmergencyContactName] = useState('Muhammad Khan');
+    const [emergencyContactPhone, setEmergencyContactPhone] = useState('0321-9876543');
+    const [emergencyContactRelation, setEmergencyContactRelation] = useState('Father');
 
     // 🔹 File Uploads
     const [photoFile, setPhotoFile] = useState('');
     const [documentsFile, setDocumentsFile] = useState('');
 
     // 🔹 Additional Info
-    const [motivation, setMotivation] = useState('');
-    const [additionalInfo, setAdditionalInfo] = useState('');
+    const [motivation, setMotivation] = useState('I am passionate about pursuing higher education in this field and believe this program will help me achieve my career goals. I have always been interested in this subject and want to contribute meaningfully to this industry.');
+    const [additionalInfo, setAdditionalInfo] = useState('I have participated in various extracurricular activities and volunteer work. I am a dedicated student with strong communication skills and a willingness to learn.');
 
     // Loading state
     const [submitting, setSubmitting] = useState(false);
@@ -124,10 +128,10 @@ const AdmissionNew = ({ navigation, route }) => {
             Alert.alert('Error', 'Please provide emergency contact information');
             return false;
         }
-        if (!photoFile) {
-            Alert.alert('Error', 'Please upload your photo');
-            return false;
-        }
+        // if (!photoFile) {
+        //     Alert.alert('Error', 'Please upload your photo');
+        //     return false;
+        // }
         if (!motivation) {
             Alert.alert('Error', 'Please explain why you want to apply');
             return false;
@@ -137,7 +141,7 @@ const AdmissionNew = ({ navigation, route }) => {
 
     // Handle form submission
     const handleSubmit = async () => {
-        if (!validateForm()) return;
+        // if (!validateForm()) return;
 
         try {
             setSubmitting(true);
@@ -171,8 +175,8 @@ const AdmissionNew = ({ navigation, route }) => {
                 emergencyContactRelation,
 
                 // File Uploads
-                photoFile,
-                documentsFile,
+                photoFile: photoFile || "null",    
+                documentsFile: documentsFile || "null",
 
                 // Course / College Info
                 courseId: course?.id || '',
@@ -184,10 +188,17 @@ const AdmissionNew = ({ navigation, route }) => {
                 motivation,
                 additionalInfo,
 
+                // User Info
+                userId: user?.uid || '',
+
                 // System Generated
                 status: 'pending',
                 appliedAt: serverTimestamp(),
             };
+
+
+            console.log("data " , admissionData);
+            
 
             // Add to Firestore
             const docRef = await addDoc(collection(db, 'applications'), admissionData);
