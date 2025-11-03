@@ -1,33 +1,81 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, ScrollView, TouchableOpacity, Image, StyleSheet, ActivityIndicator } from "react-native";
-import { collection, getDocs, query, orderBy } from 'firebase/firestore';
+import { collection, getDocs, query, orderBy, where } from 'firebase/firestore';
 import { db } from '../../Firebase';
 import { Ionicons, MaterialIcons } from '@expo/vector-icons';
+import { useSelector } from 'react-redux';
 
-const Stories = ({ navigation }) => {
+const Stories = ({ navigation, route }) => {
     const [stories, setStories] = useState([]);
     const [loading, setLoading] = useState(true);
+    
+    // Get collegeId from route params or from Redux store
+    const collegeIdFromRoute = route?.params?.collegeId;
+    const userCollegeId = useSelector((state) => state.home.uid); // Get logged-in college's UID
+    const collegeId = collegeIdFromRoute || userCollegeId;
 
     useEffect(() => {
         fetchSuccessStories();
-    }, []);
+    }, [collegeId]);
 
     const fetchSuccessStories = async () => {
         try {
             setLoading(true);
-            const q = query(
-                collection(db, 'successStories'),
-                orderBy('createdAt', 'desc')
-            );
+            
+            let q;
+            if (collegeId) {
+                // Filter by collegeId if available
+                try {
+                    // Try with orderBy first (requires Firestore composite index)
+                    q = query(
+                        collection(db, 'successStories'),
+                        where('collegeId', '==', collegeId),
+                        orderBy('createdAt', 'desc')
+                    );
+                    console.log('Fetching stories for collegeId:', collegeId);
+                } catch (indexError) {
+                    // If index error, fetch without orderBy and sort in memory
+                    console.log('Index not found, fetching without orderBy');
+                    q = query(
+                        collection(db, 'successStories'),
+                        where('collegeId', '==', collegeId)
+                    );
+                }
+            } else {
+                // Fetch all stories if no collegeId
+                q = query(
+                    collection(db, 'successStories'),
+                    orderBy('createdAt', 'desc')
+                );
+                console.log('Fetching all stories');
+            }
+            
             const querySnapshot = await getDocs(q);
             const storiesData = [];
             querySnapshot.forEach((doc) => {
                 storiesData.push({ id: doc.id, ...doc.data() });
             });
+            
+            // Sort in memory if we couldn't use orderBy in query
+            if (collegeId) {
+                storiesData.sort((a, b) => {
+                    const dateA = a.createdAt?.toDate ? a.createdAt.toDate() : new Date(a.createdAt);
+                    const dateB = b.createdAt?.toDate ? b.createdAt.toDate() : new Date(b.createdAt);
+                    return dateB - dateA; // Descending order (newest first)
+                });
+            }
+            
             setStories(storiesData);
             console.log('Fetched stories:', storiesData.length);
+            console.log('Stories data:', storiesData);
         } catch (error) {
             console.error("Error fetching success stories:", error);
+            console.error("Error details:", error.message);
+            
+            // If there's an index error, show helpful message
+            if (error.message?.includes('index')) {
+                console.error('Firestore Index Required. Please create a composite index for collegeId + createdAt');
+            }
         } finally {
             setLoading(false);
         }
@@ -59,9 +107,19 @@ const Stories = ({ navigation }) => {
                 </TouchableOpacity>
                 <View style={styles.headerTextContainer}>
                     <Text style={styles.headerTitle}>Success Stories</Text>
-                    <Text style={styles.headerSubtitle}>Showcase graduate achievements and testimonials</Text>
+                    <Text style={styles.headerSubtitle}>
+                        {collegeId ? 'College graduate achievements and testimonials' : 'Showcase graduate achievements and testimonials'}
+                    </Text>
                 </View>
             </View>
+
+            {/* College Filter Info */}
+            {collegeId && (
+                <View style={styles.filterInfo}>
+                    <Ionicons name="filter" size={16} color="#003366" />
+                    <Text style={styles.filterText}>Showing stories for this college</Text>
+                </View>
+            )}
 
             <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
                 {loading ? (
@@ -73,7 +131,9 @@ const Stories = ({ navigation }) => {
                     <View style={styles.emptyContainer}>
                         <MaterialIcons name="auto-stories" size={60} color="#ccc" />
                         <Text style={styles.emptyText}>No success stories yet</Text>
-                        <Text style={styles.emptySubtext}>Check back later for inspiring stories!</Text>
+                        <Text style={styles.emptySubtext}>
+                            {collegeId ? 'This college has no success stories yet' : 'Check back later for inspiring stories!'}
+                        </Text>
                     </View>
                 ) : (
                     stories.map((story, index) => (
@@ -180,6 +240,23 @@ const styles = StyleSheet.create({
         fontSize: 13,
         color: '#666',
         marginTop: 2,
+    },
+    filterInfo: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        backgroundColor: '#e6f0ff',
+        padding: 10,
+        marginHorizontal: 15,
+        marginTop: 10,
+        borderRadius: 8,
+        borderLeftWidth: 4,
+        borderLeftColor: '#003366',
+    },
+    filterText: {
+        fontSize: 13,
+        color: '#003366',
+        marginLeft: 8,
+        fontWeight: '600',
     },
     scrollView: {
         flex: 1,

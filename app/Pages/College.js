@@ -268,7 +268,7 @@ const College = ({ navigation, route }) => {
 
                     <TouchableOpacity 
                         style={styles.actionButton}
-                        onPress={() => navigation.navigate("Stories")}
+                        onPress={() => navigation.navigate("Stories", { collegeId: college?.uid })}
                     >
                         <Ionicons name="star-outline" size={24} color="#fff" />
                         <Text style={styles.actionButtonText}>Success Stories</Text>
