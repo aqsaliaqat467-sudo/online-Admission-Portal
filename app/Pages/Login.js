@@ -37,9 +37,10 @@ const Login = ({ navigation }) => {
                 </TextInput>
                 <Text style={{ marginStart: 40, marginTop: 10 }}>Password</Text>
                 <TextInput
-                    onChange={(text) => setPassword(text)}
+                    onChangeText={setPassword}
                     value={password}
                     placeholder="*******"
+                    secureTextEntry
                     placeholderTextColor="#c2c2c2ff"
                     style={{ backgroundColor: "#F4F4F4", borderRadius: 10, width: '80%', height: 40, justifyContent: "center", marginStart: 40, marginTop: 5 }}>
                 </TextInput>
