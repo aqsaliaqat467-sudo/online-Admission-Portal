@@ -14,7 +14,7 @@ const AdmissionNew = ({ navigation, route }) => {
     const college = route?.params?.college;
     
     // Get user from Redux state
-    const user = useSelector((state) => state.user);
+    const user = useSelector((state) => state.home.user);
 
     // 🔹 Personal Information
     const [firstName, setFirstName] = useState('Ahmed');

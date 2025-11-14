@@ -1,28 +1,53 @@
+import { collection, getDocs, orderBy, query, where } from 'firebase/firestore';
 import React, { useEffect, useState } from "react";
-import { View, Text, ScrollView, TouchableOpacity, SafeAreaView, ActivityIndicator } from "react-native";
-import { collection, getDocs, query, orderBy } from 'firebase/firestore';
+import { ActivityIndicator, SafeAreaView, ScrollView, Text, TouchableOpacity, View } from "react-native";
+import { useSelector } from 'react-redux';
 import { db } from '../../Firebase';
+
+import { MaterialIcons } from '@expo/vector-icons';
 
 export default function MyApplications({navigation}) {
   const [applications, setApplications] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  let  {user} = useSelector((state)=>state.home)
+
+  alert (user.uid)
+  
+  // Get current user from Redux
+  const currentUser = useSelector(state => state.user?.currentUser);
+  // const userId = currentUser?.uid;
+
   useEffect(() => {
-    fetchApplications();
-  }, []);
+    if (user) {
+      fetchApplications();
+    }
+  }, [user]);
 
   const fetchApplications = async () => {
+    if (!user) return;
+    
     try {
       setLoading(true);
-      const q = query(collection(db, 'applications'), orderBy('appliedAt', 'desc'));
+      // Only fetch applications for the current user
+      const q = query(
+        collection(db, 'applications'),
+        where('userId', '==', user.uid),
+        orderBy('appliedAt', 'desc')
+      );
+      
       const querySnapshot = await getDocs(q);
       
       const apps = [];
       querySnapshot.forEach((doc) => {
-        apps.push({
-          id: doc.id,
-          ...doc.data()
-        });
+        const data = doc.data();
+        // Only add application if it belongs to current user (extra safety check)
+        if (data.userId === user.uid) {
+          apps.push({
+            id: doc.id,
+            ...data
+          });
+        }
       });
       
       setApplications(apps);
@@ -48,12 +73,19 @@ export default function MyApplications({navigation}) {
 
   const formatDate = (timestamp) => {
     if (!timestamp) return 'N/A';
-    const date = timestamp.toDate ? timestamp.toDate() : new Date(timestamp);
-    return date.toLocaleDateString('en-US', { 
-      year: 'numeric', 
-      month: 'short', 
-      day: 'numeric' 
-    });
+    try {
+      const date = timestamp.toDate ? timestamp.toDate() : new Date(timestamp);
+      return date.toLocaleDateString('en-US', { 
+        year: 'numeric', 
+        month: 'short', 
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+      });
+    } catch (error) {
+      console.error('Error formatting date:', error);
+      return 'Invalid date';
+    }
   };
 
   const getInitials = (collegeName) => {
@@ -65,13 +97,31 @@ export default function MyApplications({navigation}) {
     return collegeName.substring(0, 2).toUpperCase();
   };
 
+  if (!user.uid ) {
+    return (
+      <SafeAreaView style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#fff' }}>
+        <Text style={{ fontSize: 16, color: '#6B7280' }}>Please sign in to view your applications</Text>
+      </SafeAreaView>
+    );
+  }
+
   return (
     <SafeAreaView style={{ backgroundColor: "#ffffffff", flex: 1 }}>
-      <View style={{ paddingTop: 18, paddingBottom: 10, paddingHorizontal: 16, backgroundColor: "#fefefeff", borderBottomWidth: 1, borderBottomColor: "#E5E7EB",}}>
-        <Text style={{ fontSize: 20, fontWeight: "700", color: "#002D62" }}>My Applications</Text>
-        <Text style={{ fontSize: 14, color: "#6B7280", marginTop: 4 }}>
-          {applications.length} {applications.length === 1 ? 'Application' : 'Applications'}
-        </Text>
+      <View style={{ paddingTop: 18, paddingBottom: 10, paddingHorizontal: 16, backgroundColor: "#fefefeff", borderBottomWidth: 1, borderBottomColor: "#E5E7EB" }}>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+          <View>
+            <Text style={{ fontSize: 20, fontWeight: "700", color: "#002D62" }}>My Applications</Text>
+            <Text style={{ fontSize: 14, color: "#6B7280", marginTop: 4 }}>
+              {applications.length} {applications.length === 1 ? 'Application' : 'Applications'}
+            </Text>
+          </View>
+          <TouchableOpacity 
+            onPress={fetchApplications}
+            style={{ padding: 8 }}
+          >
+            <MaterialIcons name="refresh" size={24} color="#002D62" />
+          </TouchableOpacity>
+        </View>
       </View>
       
       {loading ? (

@@ -11,7 +11,7 @@ const Home1 = ({ navigation }) => {
     const getDataFromDatabase = async () => {
         try {
             setLoading(true);
-            alert ("hello")
+            // alert ("hello")
             const clgData = await getAllData("colleges");  // Firestore se data fetch
             
             console.log("this is college data", clgData);
