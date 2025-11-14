@@ -1,4 +1,5 @@
 import { MaterialIcons } from '@expo/vector-icons';
+import { useNavigation } from "@react-navigation/native";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import { ActivityIndicator, Image, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
@@ -10,6 +11,8 @@ const SearchScreen = () => {
   const [filteredColleges, setFilteredColleges] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  const navigation = useNavigation();  // <-- ADD THIS
 
   // Fetch all colleges on component mount
   useEffect(() => {
@@ -126,21 +129,13 @@ const SearchScreen = () => {
       </View>
       
       <View style={styles.contactContainer}>        
-        <TouchableOpacity 
-          style={[styles.contactButton, styles.viewDetailsButton]}
-          onPress={() => {
-            // Navigate to the college details page with the college object in the URL
-            navigation.navigate('BottomTab', {
-              screen: 'Home',
-              params: {
-                screen: 'College',
-                params: { college: JSON.stringify(college) }
-              }
-            });
-          }}
-        >
-          <Text style={[styles.contactButtonText, { color: '#2563eb' }]}>View Details</Text>
-        </TouchableOpacity>
+       <TouchableOpacity 
+  style={[styles.contactButton, styles.viewDetailsButton]}
+  onPress={() => navigation.navigate("College", { college })}
+>
+  <Text style={[styles.contactButtonText, { color: '#2563eb' }]}>View Details</Text>
+</TouchableOpacity>
+
       </View>
     </View>
   );
