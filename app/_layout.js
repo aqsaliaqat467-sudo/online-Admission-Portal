@@ -98,9 +98,8 @@ const RenderStack = () => {
         <Stack.Navigator screenOptions={{ headerShown: false }}>
           <Stack.Screen name="Signup" component={Signup} />
           <Stack.Screen name="Login" component={Login} />
+          <Stack.Screen name="Forgotpass" component={Forgotpass} />
           <Stack.Screen options={{ headerShown: false }} name="BottomTab" component={BottomTab} />
-
-
         </Stack.Navigator>
       );
   }

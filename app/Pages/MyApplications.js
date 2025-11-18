@@ -12,7 +12,7 @@ export default function MyApplications({navigation}) {
 
   let  {user} = useSelector((state)=>state.home)
 
-  alert (user.uid)
+  // alert (user.uid)
   
   // Get current user from Redux
   const currentUser = useSelector(state => state.user?.currentUser);

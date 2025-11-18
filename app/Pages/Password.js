@@ -1,10 +1,8 @@
+import { EmailAuthProvider, reauthenticateWithCredential, updatePassword } from 'firebase/auth';
 import React, { useState } from "react";
-import { View, Text, TextInput, TouchableOpacity, Alert, ActivityIndicator } from "react-native";
-import { auth } from '../../Firebase';
-import { reauthenticateWithCredential, EmailAuthProvider, updatePassword } from 'firebase/auth';
+import { ActivityIndicator, Alert, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { useDispatch } from 'react-redux';
-import { setUser } from '../redux/Slices/HomeDataSlice';
-import { setRole } from '../redux/roleSlice';
+import { auth } from '../../Firebase';
 
 const Password = ({ navigation }) => {
     const [currentPassword, setCurrentPassword] = useState('');

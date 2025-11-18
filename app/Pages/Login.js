@@ -10,7 +10,7 @@ const Login = ({ navigation }) => {
   const [password, setPassword] = useState("123456");
   const dispatch = useDispatch();
   const handleLogin = async () => {
-  
+ 
     const user =await login(email, password)
       if (user?.uid) {
           dispatch(setRole("Student"));
