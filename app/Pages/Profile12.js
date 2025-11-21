@@ -1,3 +1,5 @@
+import { router } from 'expo-router';
+import { signOut } from 'firebase/auth';
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
 import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, Alert, Image, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
@@ -81,6 +83,19 @@ const Profile12 = ({ navigation }) => {
         );
     }
 
+    const handleLogout = async () => {
+        try {
+            await signOut(auth);
+            // Clear any user data from Redux if needed
+            dispatch(setUser(null));
+            // Navigate to login screen
+            router.replace('/Login');
+        } catch (error) {
+            console.error('Error signing out:', error);
+            Alert.alert('Error', 'Failed to sign out. Please try again.');
+        }
+    };
+
     if (error) {
         return (
             <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', padding: 20 }}>
@@ -92,10 +107,23 @@ const Profile12 = ({ navigation }) => {
                         padding: 12,
                         borderRadius: 8,
                         width: 200,
-                        alignItems: 'center'
+                        alignItems: 'center',
+                        marginBottom: 10
                     }}
                 >
                     <Text style={{ color: 'white' }}>Go Back</Text>
+                </TouchableOpacity>
+                <TouchableOpacity 
+                    onPress={handleLogout}
+                    style={{
+                        backgroundColor: '#dc3545',
+                        padding: 12,
+                        borderRadius: 8,
+                        width: 200,
+                        alignItems: 'center'
+                    }}
+                >
+                    <Text style={{ color: 'white' }}>Logout</Text>
                 </TouchableOpacity>
             </View>
         );

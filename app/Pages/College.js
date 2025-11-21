@@ -1,8 +1,9 @@
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
+import { collection, getDocs, query, where } from 'firebase/firestore';
 import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, Dimensions, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Carousel from "react-native-reanimated-carousel";
-import { collection, getDocs, query, where } from 'firebase/firestore';
+import { useSelector } from "react-redux";
 import { db } from '../../Firebase';
 
 const { width } = Dimensions.get("window");
@@ -10,6 +11,9 @@ const { width } = Dimensions.get("window");
 const College = ({ navigation, route }) => {
     // Get college data passed from Home1
     const college = route?.params?.college;
+    const user= useSelector((state) => state.home.user);
+
+    // alert (user.uid+ "______" + college.uid)
     
     const [courses, setCourses] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -278,7 +282,7 @@ const College = ({ navigation, route }) => {
                 {/* Chat Button */}
                 <TouchableOpacity 
                     style={styles.chatButton}
-                    onPress={() => navigation.navigate("Chat")}
+                    onPress={() => navigation.navigate("Chat", { currentUserId : user?.uid, otherUserId : college?.uid, otherUserName : college?.name })}
                 >
                     <Ionicons name="chatbox-outline" size={30} color="#003366" />
                     <Text style={styles.chatButtonText}>Chat</Text>
