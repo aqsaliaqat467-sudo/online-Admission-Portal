@@ -5,8 +5,8 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { View } from 'react-native';
 import Eprofile from './Eprofile';
 import HomeStack from './HomeStack';
+import MyApplications from './MyApplications';
 import Search from './Search';
-import Stories from './Stories';
 const Tab = createBottomTabNavigator();
 
 export default function BottomTab() {
@@ -16,7 +16,7 @@ export default function BottomTab() {
             <Tab.Navigator initialRouteName="Home">
                 <Tab.Screen options={{ headerShown: false, tabBarIcon: ({ color }) => <Ionicons name="home" size={20} color={color} /> }} name="Home" component={HomeStack} />
                 <Tab.Screen options={{ tabBarIcon: ({ color }) => <MaterialIcons name="search" size={25} color="black" /> }} name="Search" component={Search} />
-                <Tab.Screen options={{ tabBarIcon: ({ color }) => <MaterialIcons name="auto-stories" size={20} color="black" /> }} name="Stories" component={Stories} />
+                <Tab.Screen options={{ tabBarIcon: ({ color }) => <MaterialCommunityIcons name="application" size={22} color="black" /> }} name="application" component={MyApplications} />
                 <Tab.Screen options={{ tabBarIcon: ({ color }) => <MaterialCommunityIcons name="account-circle" size={25} color="black" /> }} name="Profile" component={Eprofile} />
 
 

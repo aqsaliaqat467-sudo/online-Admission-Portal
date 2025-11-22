@@ -157,10 +157,10 @@ const Home1 = ({ navigation }) => {
                                             <Text style={styles.badgeLabel}>Established</Text>
                                             <Text style={styles.badgeValue}>{item.establishedYear || 'N/A'}</Text>
                                         </View>
-                                        <View style={styles.infoBadge}>
+                                        {/* <View style={styles.infoBadge}>
                                             <Text style={styles.badgeLabel}>Postal Code</Text>
                                             <Text style={styles.badgeValue}>{item.postalCode || 'N/A'}</Text>
-                                        </View>
+                                        </View> */}
                                     </View>
 
                                     {/* View Details Button */}

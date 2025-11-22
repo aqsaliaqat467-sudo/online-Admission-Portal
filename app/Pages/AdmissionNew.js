@@ -26,10 +26,59 @@ const AdmissionNew = ({ navigation, route }) => {
     const [nationality, setNationality] = useState('Pakistani');
 
     // 🔹 Previous Education
-    const [previousEducation, setPreviousEducation] = useState('Intermediate');
-    const [previousInstitution, setPreviousInstitution] = useState('Government College University');
-    const [previousYear, setPreviousYear] = useState('2023');
-    const [previousGrade, setPreviousGrade] = useState('85%');
+    const educationLevels = ['Matric', 'Intermediate', 'A-Levels', 'Other'];
+    const [educationDetails, setEducationDetails] = useState({
+        'Matric': {
+            selected: true,
+            institution: '',
+            year: '',
+            grade: ''
+        },
+        'Intermediate': {
+            selected: false,
+            institution: '',
+            year: '',
+            grade: ''
+        },
+        'A-Levels': {
+            selected: false,
+            institution: '',
+            year: '',
+            grade: ''
+        },
+        'Other': {
+            selected: false,
+            institution: '',
+            year: '',
+            grade: ''
+        }
+    });
+    
+    const toggleEducation = (level) => {
+        // Don't allow deselecting if it's the only selected item
+        const selectedCount = Object.values(educationDetails).filter(edu => edu.selected).length;
+        if (educationDetails[level].selected && selectedCount <= 1) {
+            return;
+        }
+        
+        setEducationDetails(prev => ({
+            ...prev,
+            [level]: {
+                ...prev[level],
+                selected: !prev[level].selected
+            }
+        }));
+    };
+    
+    const updateEducationDetail = (level, field, value) => {
+        setEducationDetails(prev => ({
+            ...prev,
+            [level]: {
+                ...prev[level],
+                [field]: value
+            }
+        }));
+    };
 
     // 🔹 Address Details
     const [address, setAddress] = useState('House 123, Street 45, Model Town');
@@ -157,10 +206,14 @@ const AdmissionNew = ({ navigation, route }) => {
                 nationality,
 
                 // Previous Education
-                previousEducation,
-                previousInstitution,
-                previousYear,
-                previousGrade,
+                educationDetails: Object.entries(educationDetails)
+                    .filter(([_, details]) => details.selected)
+                    .map(([level, details]) => ({
+                        level,
+                        institution: details.institution,
+                        year: details.year,
+                        grade: details.grade
+                    })),
 
                 // Address Details
                 address,
@@ -331,48 +384,66 @@ const AdmissionNew = ({ navigation, route }) => {
                     <Text style={styles.sectionTitle}>🎓 Previous Education</Text>
                     
                     <Text style={styles.label}>Education Level *</Text>
-                    <TextInput
-                        style={styles.input}
-                        value={previousEducation}
-                        onChangeText={setPreviousEducation}
-                        placeholder="e.g., Intermediate, A-Levels"
-                    />
-
-                    <Text style={styles.label}>Institution Name *</Text>
-                    <TextInput
-                        style={styles.input}
-                        value={previousInstitution}
-                        onChangeText={setPreviousInstitution}
-                        placeholder="Name of your previous school/college"
-                    />
-
-                    <View style={styles.row}>
-                        <View style={styles.halfInput}>
-                            <Text style={styles.label}>Year of Completion</Text>
-                            <TextInput
-                                style={styles.input}
-                                value={previousYear}
-                                onChangeText={setPreviousYear}
-                                placeholder="2023"
-                                keyboardType="numeric"
-                            />
-                        </View>
-                        <View style={styles.halfInput}>
-                            <Text style={styles.label}>Grade/Percentage</Text>
-                            <TextInput
-                                style={styles.input}
-                                value={previousGrade}
-                                onChangeText={setPreviousGrade}
-                                placeholder="e.g., 85%"
-                            />
-                        </View>
+                    <View style={styles.pickerContainer}>
+                        {educationLevels.map((level) => (
+                            <TouchableOpacity
+                                key={level}
+                                style={[
+                                    styles.educationOption,
+                                    educationDetails[level].selected && styles.selectedEducationOption
+                                ]}
+                                onPress={() => toggleEducation(level)}
+                            >
+                                <Text style={[
+                                    styles.educationOptionText,
+                                    educationDetails[level].selected && styles.selectedEducationText
+                                ]}>
+                                    {level}
+                                    {educationDetails[level].selected && ' ✓'}
+                                </Text>
+                            </TouchableOpacity>
+                        ))}
                     </View>
-                </View>
+                    <Text style={styles.hintText}>Select all that apply (at least one required)</Text>
 
-                {/* Address Details Section */}
-                <View style={styles.section}>
-                    <Text style={styles.sectionTitle}>📍 Address Details</Text>
-                    
+                    {educationLevels.map(level => (
+                        educationDetails[level].selected && (
+                            <View key={level} style={styles.educationDetailContainer}>
+                                <Text style={styles.educationLevelTitle}>{level} Details</Text>
+                                
+                                <Text style={styles.label}>Institution Name *</Text>
+                                <TextInput
+                                    style={styles.input}
+                                    value={educationDetails[level].institution}
+                                    onChangeText={(text) => updateEducationDetail(level, 'institution', text)}
+                                    placeholder={`${level} institution name`}
+                                />
+
+                                <View style={styles.row}>
+                                    <View style={styles.halfInput}>
+                                        <Text style={styles.label}>Year of Completion *</Text>
+                                        <TextInput
+                                            style={styles.input}
+                                            value={educationDetails[level].year}
+                                            onChangeText={(text) => updateEducationDetail(level, 'year', text)}
+                                            placeholder="e.g., 2023"
+                                            keyboardType="numeric"
+                                        />
+                                    </View>
+                                    <View style={styles.halfInput}>
+                                        <Text style={styles.label}>Grade/Percentage *</Text>
+                                        <TextInput
+                                            style={styles.input}
+                                            value={educationDetails[level].grade}
+                                            onChangeText={(text) => updateEducationDetail(level, 'grade', text)}
+                                            placeholder={level === 'A-Levels' ? 'e.g., A, B, C' : 'e.g., 85% or A+'}
+                                        />
+                                    </View>
+                                </View>
+                            </View>
+                        )
+                    ))}
+
                     <Text style={styles.label}>Street Address *</Text>
                     <TextInput
                         style={styles.input}
@@ -546,7 +617,7 @@ const AdmissionNew = ({ navigation, route }) => {
                     )}
                 </TouchableOpacity>
 
-                <View style={{ height: 30 }} />
+                <View style={{ height: 30 }}></View>
             </ScrollView>
         </View>
     );
@@ -616,12 +687,62 @@ const styles = StyleSheet.create({
         marginTop: 10,
     },
     input: {
+        backgroundColor: '#fff',
         borderWidth: 1,
-        borderColor: '#d1d5db',
+        borderColor: '#ddd',
         borderRadius: 8,
         padding: 12,
+        marginBottom: 15,
+        fontSize: 16,
+    },
+    pickerContainer: {
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        marginBottom: 15,
+    },
+    educationOption: {
+        backgroundColor: '#f0f0f0',
+        borderRadius: 20,
+        paddingVertical: 8,
+        paddingHorizontal: 16,
+        marginRight: 10,
+        marginBottom: 10,
+        borderWidth: 1,
+        borderColor: '#ddd',
+    },
+    selectedEducationOption: {
+        backgroundColor: '#0066cc',
+        borderColor: '#0052a3',
+    },
+    educationOptionText: {
+        color: '#333',
         fontSize: 14,
-        backgroundColor: '#f8fafc',
+    },
+    selectedEducationText: {
+        color: '#fff',
+        fontWeight: '600',
+    },
+    hintText: {
+        fontSize: 12,
+        color: '#666',
+        marginTop: -10,
+        marginBottom: 10,
+        fontStyle: 'italic',
+    },
+    educationDetailContainer: {
+        backgroundColor: '#f9f9f9',
+        borderRadius: 8,
+        padding: 12,
+        marginTop: 10,
+        marginBottom: 15,
+        borderLeftWidth: 3,
+        borderLeftColor: '#0066cc',
+    },
+    educationLevelTitle: {
+        fontSize: 16,
+        fontWeight: '600',
+        color: '#003366',
+        marginBottom: 10,
     },
     textArea: {
         height: 100,

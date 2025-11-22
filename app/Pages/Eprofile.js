@@ -1,4 +1,3 @@
-import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import React from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
@@ -39,12 +38,12 @@ const Eprofile = ({ navigation }) => {
                     <Ionicons name="chevron-forward" size={18} color="gray" style={{ marginLeft: "auto" }} />
                 </TouchableOpacity> */}
 
-                 <TouchableOpacity  onPress={() => navigation.navigate("MyApplications")}
+                 {/* <TouchableOpacity  onPress={() => navigation.navigate("MyApplications")}
                 style={{ flexDirection: "row", alignItems: "center", padding: 15, }} >
                     <MaterialCommunityIcons name="application" size={20} color="gray" />
                     <Text style={{ marginLeft: 15, fontSize: 16, color: "#000" }}>Application Details</Text>
                     <Ionicons name="chevron-forward" size={18} color="gray" style={{ marginLeft: "auto" }} />
-                </TouchableOpacity>
+                </TouchableOpacity> */}
 
                 <TouchableOpacity  onPress={() => navigation.navigate("Privacy")}
                 style={{ flexDirection: "row", alignItems: "center", padding: 15, }} >

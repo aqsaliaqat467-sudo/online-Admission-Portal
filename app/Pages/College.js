@@ -158,10 +158,10 @@ const College = ({ navigation, route }) => {
                             <Text style={styles.statLabel}>Established</Text>
                             <Text style={styles.statValue}>{college.establishedYear}</Text>
                         </View>
-                        <View style={styles.statBox}>
+                        {/* <View style={styles.statBox}>
                             <Text style={styles.statLabel}>Postal Code</Text>
                             <Text style={styles.statValue}>{college.postalCode}</Text>
-                        </View>
+                        </View> */}
                     </View>
                 </View>
 
