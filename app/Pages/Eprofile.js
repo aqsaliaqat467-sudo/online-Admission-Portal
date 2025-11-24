@@ -1,11 +1,12 @@
 import React from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setRole } from '../redux/Slices/HomeDataSlice';
 
 const Eprofile = ({ navigation }) => {
     const dispatch = useDispatch();
+    const user = useSelector(state => state.home.user);
 
     const handlelogout = () => {
         dispatch(setRole(""));
@@ -18,8 +19,8 @@ const Eprofile = ({ navigation }) => {
                 </View>
                 <View style={{ padding: 10 }}>
                     <TouchableOpacity onPress={() => navigation.navigate("Profile12")}>
-                    <Text style={{ fontSize: 18, fontWeight: "bold", color: "#000" }}> Haya Pectrus</Text>
-                    <Text style={{ fontSize: 14, color: "gray" }}>haya12@gmail.com</Text>
+                    <Text style={{ fontSize: 18, fontWeight: "bold", color: "#000" }}>{user?.name || 'User'}</Text>
+                    <Text style={{ fontSize: 14, color: "gray" }}>{user?.email || ''}</Text>
                     </TouchableOpacity>
                 </View>
                 <TouchableOpacity  onPress={() => navigation.navigate("Setting")}>
