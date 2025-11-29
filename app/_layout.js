@@ -88,7 +88,7 @@ const StudentStack = () => {
 const RenderStack = () => {
   const role = useSelector((state) => state.home.role);
 
-  // alert (role)
+  alert (role)
 
   switch (role) {
     case "Student":
@@ -99,7 +99,7 @@ const RenderStack = () => {
           <Stack.Screen name="Signup" component={Signup} />
           <Stack.Screen name="Login" component={Login} />
           <Stack.Screen name="Forgotpass" component={Forgotpass} />
-          <Stack.Screen options={{ headerShown: false }} name="BottomTab" component={BottomTab} />
+          {/* <Stack.Screen options={{ headerShown: false }} name="BottomTab" component={BottomTab} /> */}
         </Stack.Navigator>
       );
   }

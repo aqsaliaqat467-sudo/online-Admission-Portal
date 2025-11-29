@@ -282,7 +282,7 @@ const College = ({ navigation, route }) => {
                 {/* Chat Button */}
                 <TouchableOpacity 
                     style={styles.chatButton}
-                    onPress={() => navigation.navigate("Chat", { currentUserId : user?.uid, otherUserId : college?.uid, otherUserName : college?.name })}
+                    onPress={() => navigation.navigate("Chat", { currentUserId : user?.uid, otherUserId : college?.uid, otherUserName : college?.collegeName })}
                 >
                     <Ionicons name="chatbox-outline" size={30} color="#003366" />
                     <Text style={styles.chatButtonText}>Chat</Text>

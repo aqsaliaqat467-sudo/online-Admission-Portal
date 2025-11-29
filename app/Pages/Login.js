@@ -5,19 +5,20 @@ import { login } from "../Helper/FirebaseHelper";
 import { setRole, setUser } from '../redux/Slices/HomeDataSlice';
 
 const Login = ({ navigation }) => {
-   
-  const [email, setEmail] = useState("aqsaliaqat567@gmail.com");
-  const [password, setPassword] = useState("123456");
-  const dispatch = useDispatch();
-  const handleLogin = async () => {
- 
-    const user =await login(email, password)
-      if (user?.uid) {
-          dispatch(setRole("Student"));
-          dispatch(setUser(user));
-            
-        } 
-      };
+
+    const [email, setEmail] = useState("aqsaliaqat567@gmail.com");
+    const [password, setPassword] = useState("123456");
+    const dispatch = useDispatch();
+
+    
+    const handleLogin = async () => {
+        const user = await login(email, password)
+        if (user?.uid) {
+            dispatch(setRole("Student"));
+            dispatch(setUser(user));
+
+        }
+    };
     return (
         <View style={{ backgroundColor: "#ffffffff", width: '100%', height: '100%' }}>
             <View style={{ width: '20%', height: 70, backgroundColor: "#ffffffff", borderColor: "#003366", borderWidth: 3, borderRadius: 20, justifyContent: "center", alignSelf: "center", marginTop: 40, }} >

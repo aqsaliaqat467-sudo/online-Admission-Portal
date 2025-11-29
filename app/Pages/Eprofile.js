@@ -10,6 +10,7 @@ const Eprofile = ({ navigation }) => {
 
     const handlelogout = () => {
         dispatch(setRole(""));
+        // navigation.navigate("Login");
     };
     return (
         <View style={{ height: "100%", width: "100%", backgroundColor: "#fff" }}>

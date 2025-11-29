@@ -2,11 +2,13 @@ import { Ionicons } from "@expo/vector-icons";
 import {
   addDoc,
   collection,
+  doc,
   getDocs,
   onSnapshot,
   orderBy,
   query,
   serverTimestamp,
+  updateDoc,
   where,
 } from "firebase/firestore";
 import React, { useEffect, useRef, useState } from "react";
@@ -21,6 +23,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import { useSelector } from "react-redux";
 import { db } from "../../Firebase";
 
 const Chat = ({ route }) => {
@@ -32,6 +35,10 @@ const Chat = ({ route }) => {
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(true);
   const flatListRef = useRef(null);
+  const user = useSelector((state) => state.home.user);
+
+  const senderUserName = user?.fName + user?.lName 
+  const receverUserName = otherUserName || "User";
 
   // 🔥 Create or fetch chat doc
   const getOrCreateChat = async (currentUserId, otherUserId) => {
@@ -45,13 +52,30 @@ const Chat = ({ route }) => {
     const existing = await getDocs(q);
 
     if (!existing.empty) {
-      return existing.docs[0].id; // existing chat doc ID
+      const existingChat = existing.docs[0];
+      const chatData = existingChat.data();
+      
+      // Update chat doc with names if they don't exist
+      if (!chatData.userNames || Object.keys(chatData.userNames).length === 0) {
+        await updateDoc(doc(db, "chats", existingChat.id), {
+          userNames: {
+            [currentUserId]: senderUserName,
+            [otherUserId]: receverUserName,
+          },
+        });
+      }
+      
+      return existingChat.id; // existing chat doc ID
     }
 
-    // Create a new chat doc with auto ID
+    // Create a new chat doc with auto ID and user names
     const newChat = await addDoc(chatsRef, {
       chatId: chatIdField,
       users: sortedIds,
+      userNames: {
+        [currentUserId]: senderUserName,
+        [otherUserId]: receverUserName,
+      },
       createdAt: serverTimestamp(),
     });
 
@@ -113,7 +137,9 @@ const Chat = ({ route }) => {
       await addDoc(collection(db, "chats", conversationId, "messages"), {
         text: trimmed,
         senderId: currentUserId,
+        senderName: senderUserName,
         recipientId: otherUserId,
+        recipientName: receverUserName,
         createdAt: serverTimestamp(),
       });
     } catch (error) {
