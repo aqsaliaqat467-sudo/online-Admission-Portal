@@ -1,9 +1,9 @@
 import { AntDesign, FontAwesome6, Ionicons, MaterialIcons } from "@expo/vector-icons";
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ActivityIndicator, Image, ImageBackground, RefreshControl, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { getAllData } from "../Helper/FirebaseHelper";
 
-const Home1 = ({ navigation }) => {
+const Home = ({ navigation }) => {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(true);
     const [refreshing, setRefreshing] = useState(false);
@@ -157,10 +157,7 @@ const Home1 = ({ navigation }) => {
                                             <Text style={styles.badgeLabel}>Established</Text>
                                             <Text style={styles.badgeValue}>{item.establishedYear || 'N/A'}</Text>
                                         </View>
-                                        {/* <View style={styles.infoBadge}>
-                                            <Text style={styles.badgeLabel}>Postal Code</Text>
-                                            <Text style={styles.badgeValue}>{item.postalCode || 'N/A'}</Text>
-                                        </View> */}
+                                      
                                     </View>
 
                                     {/* View Details Button */}
@@ -340,4 +337,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default Home1;           
+export default Home;           

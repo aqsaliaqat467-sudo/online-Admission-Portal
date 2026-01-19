@@ -27,13 +27,6 @@ const Signup = ({ navigation }) => {
       return;
     }
     
-    // Validate city
-    if (city.trim().toLowerCase() !== "sargodha") {
-      setCityError(true);
-      alert("Please enter 'Sargodha' as the city");
-      return;
-    }
-    
     if (!streetAddress || !state || !country) {
       alert("Please fill in all required address fields");
       return;
@@ -132,14 +125,7 @@ const Signup = ({ navigation }) => {
             <Text style={{ marginTop: 10 }}>City</Text>
             <TextInput
               value={city}
-              onChangeText={(text) => {
-                setCity(text);
-                if (text.trim().toLowerCase() === "sargodha") {
-                  setCityError(false);
-                } else {
-                  setCityError(true);
-                }
-              }}
+              onChangeText={(text) => {}}
               placeholder="City"
           placeholderTextColor="#c2c2c2ff"
               style={[
@@ -155,11 +141,6 @@ const Signup = ({ navigation }) => {
                 }
               ]}
             />
-            {cityError && (
-              <Text style={{ color: 'red', fontSize: 10, marginTop: 2 }}>
-                Only 'Sargodha' is allowed
-              </Text>
-            )}
           </View>
           <View style={{ width: '48%' }}>
             <Text style={{ marginTop: 10 }}>State/Province</Text>
@@ -189,10 +170,6 @@ const Signup = ({ navigation }) => {
           style={{ backgroundColor: "#002D62", borderRadius: 8, alignSelf: "center", width: '80%', height: 45, justifyContent: "center", marginTop: 15 }}>
           <Text 
             style={{ color: "#fff", fontWeight: "600", fontSize: 16, textAlign: "center" }}>SIGN UP</Text>
-        </TouchableOpacity>
-        <Text style={{ textAlign: "center", fontWeight: "200", marginTop: 5 }}>or sign up with</Text>
-        <TouchableOpacity style={{ backgroundColor: "#F4F4F4", width: "13%", height: "6%", alignSelf: "center", marginTop: 10 }}>
-          <Text style={{ textAlign: "center" }}>🔵🟢🟡🔴</Text>
         </TouchableOpacity>
         <View style={{ flexDirection: "row", justifyContent: "center" }}>
           <Text style={{ color: "#3b3b3bff", fontWeight: "300", fontSize: 11, textAlign: "center", marginTop: 10 }}>Already have an account? </Text>

@@ -21,7 +21,7 @@ import Courses from './Pages/Courses';
 import Delete from './Pages/Delete';
 import Eprofile from './Pages/Eprofile';
 import Forgotpass from './Pages/Forgotpass';
-import Home1 from './Pages/Home1';
+import Home from './Pages/Home';
 import HomeStack from './Pages/HomeStack';
 import Intake from './Pages/Intake';
 import Login from './Pages/Login';
@@ -44,7 +44,7 @@ const StudentStack = () => {
   return (
 
     <Stack.Navigator initialRouteName="BottomTab">
-      <Stack.Screen name="Home1" component={Home1} />
+      <Stack.Screen name="Home" component={Home} />
       <Stack.Screen name="Clghome" component={Clghome} />
       <Stack.Screen options={{ headerShown: false }} name="College" component={College} />
       <Stack.Screen name="Courses" component={Courses} />

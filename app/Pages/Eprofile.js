@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, TouchableOpacity, View } from "react-native";
+import { Image, Text, TouchableOpacity, View } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { useDispatch, useSelector } from 'react-redux';
 import { setRole } from '../redux/Slices/HomeDataSlice';
@@ -15,9 +15,17 @@ const Eprofile = ({ navigation }) => {
     return (
         <View style={{ height: "100%", width: "100%", backgroundColor: "#fff" }}>
             <View style={{ flexDirection: "row", alignItems: "center", padding: 30 }}>
-                <View style={{ width: '19%', height: 60, borderRadius: 30, backgroundColor: "#92bce7ff", justifyContent: "center", alignItems: "center", }}>
-                    <Ionicons name="person" size={30} color="#000" />
-                </View>
+                <TouchableOpacity onPress={() => navigation.navigate("Profile12")} style={{ width: 60, height: 60, borderRadius: 30, backgroundColor: "#f0f0f0", justifyContent: "center", alignItems: "center", overflow: 'hidden', borderWidth: 2, borderColor: '#0b3c66' }}>
+                    {user?.imageUrl ? (
+                        <Image 
+                            source={{ uri: user.imageUrl }} 
+                            style={{ width: '100%', height: '100%' }}
+                            resizeMode="cover"
+                        />
+                    ) : (
+                        <Ionicons name="person" size={30} color="#000" />
+                    )}
+                </TouchableOpacity>
                 <View style={{ padding: 10 }}>
                     <TouchableOpacity onPress={() => navigation.navigate("Profile12")}>
                     <Text style={{ fontSize: 18, fontWeight: "bold", color: "#000" }}>{user?.name || 'User'}</Text>

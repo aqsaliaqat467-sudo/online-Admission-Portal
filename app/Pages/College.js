@@ -20,8 +20,6 @@ const College = ({ navigation, route }) => {
     
     const images = [
         require("./images.png"),
-        require("./image1.jpg"),
-        require("./image2.jpg"),
     ];
 
     // Fetch courses for this college
@@ -66,6 +64,15 @@ const College = ({ navigation, route }) => {
             day: 'numeric' 
         });
     };
+
+    // Check if admission is closed (end date has passed)
+    const isAdmissionClosed = (endDate) => {
+        if (!endDate) return false;
+        const today = new Date();
+        const end = endDate.toDate ? endDate.toDate() : new Date(endDate);
+        return today > end;
+    };
+
     if (!college) {
         return (
             <View style={styles.errorContainer}>
@@ -247,14 +254,21 @@ const College = ({ navigation, route }) => {
                                     </View>
                                 </View>
 
-                                {/* Apply Button */}
-                                <TouchableOpacity 
-                                    style={styles.applyButton}
-                                    onPress={() => navigation.navigate('AdmissionNew', { course, college })}
-                                >
-                                    <Text style={styles.applyButtonText}>Apply Now</Text>
-                                    <Ionicons name="arrow-forward" size={18} color="#fff" />
-                                </TouchableOpacity>
+                                {/* Apply Button or Admission Closed */}
+                                {isAdmissionClosed(course.admissionEnd) ? (
+                                    <View style={[styles.applyButton, styles.admissionClosedButton]}>
+                                        <Text style={styles.applyButtonText}>Admission Closed</Text>
+                                        <Ionicons name="close-circle" size={18} color="#fff" />
+                                    </View>
+                                ) : (
+                                    <TouchableOpacity 
+                                        style={styles.applyButton}
+                                        onPress={() => navigation.navigate('AdmissionNew', { course, college })}
+                                    >
+                                        <Text style={styles.applyButtonText}>Apply Now</Text>
+                                        <Ionicons name="arrow-forward" size={18} color="#fff" />
+                                    </TouchableOpacity>
+                                )}
                             </View>
                         ))
                     )}

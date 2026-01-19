@@ -37,7 +37,7 @@ const Chat = ({ route }) => {
   const flatListRef = useRef(null);
   const user = useSelector((state) => state.home.user);
 
-  const senderUserName = user?.fName + user?.lName 
+  const senderUserName = user?.name || (user?.fName && user?.lName ? `${user.fName} ${user.lName}` : 'You')
   const receverUserName = otherUserName || "User";
 
   // 🔥 Create or fetch chat doc
@@ -218,10 +218,6 @@ const Chat = ({ route }) => {
     >
       <View style={styles.header}>
         <Text style={styles.headerTitle}>{otherUserName}</Text>
-        <Text style={styles.headerSubtitle}>
-          Chatting as{" "}
-          <Text style={styles.headerHighlight}>{currentUserId || "Unknown"}</Text>
-        </Text>
       </View>
 
       <FlatList
@@ -268,8 +264,8 @@ const styles = StyleSheet.create({
     elevation: 3,
   },
   headerTitle: { fontSize: 20, fontWeight: "700", color: "#fff" },
-  headerSubtitle: { marginTop: 4, fontSize: 14, color: "rgba(255,255,255,0.85)" },
-  headerHighlight: { fontWeight: "600" },
+  headerSubtitle: { display: 'none' },
+  headerHighlight: { display: 'none' },
   messageList: { paddingHorizontal: 16, paddingVertical: 10 },
   messageRow: { flexDirection: "row", marginBottom: 8 },
   messageRowLeft: { justifyContent: "flex-start" },

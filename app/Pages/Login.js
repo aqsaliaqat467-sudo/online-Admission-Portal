@@ -6,8 +6,8 @@ import { setRole, setUser } from '../redux/Slices/HomeDataSlice';
 
 const Login = ({ navigation }) => {
 
-    const [email, setEmail] = useState("aqsaliaqat567@gmail.com");
-    const [password, setPassword] = useState("123456");
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
     const dispatch = useDispatch();
 
     
@@ -46,16 +46,12 @@ const Login = ({ navigation }) => {
                     style={{ backgroundColor: "#F4F4F4", borderRadius: 10, width: '80%', height: 40, justifyContent: "center", marginStart: 40, marginTop: 5 }}>
                 </TextInput>
                 <TouchableOpacity onPress={() => navigation.navigate("Forgotpass")}
-                    style={{ marginTop: 5 }}>
+                    style={{ marginTop: 5 , backgroundColor:"#fff" }}>
                     <Text style={{ color: "#002D62", fontWeight: "600", fontSize: 12, textAlign: "right", marginRight: 35 }}>Forgot Password</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
                     style={{ backgroundColor: "#002D62", borderRadius: 8, alignSelf: "center", width: '80%', height: 45, justifyContent: "center", marginTop: 15 }}>
                     <Text style={{ color: "#fff", fontWeight: "600", fontSize: 16, textAlign: "center" }} onPress={handleLogin} >SIGN IN</Text>
-                </TouchableOpacity>
-                <Text style={{ textAlign: "center", fontWeight: "200", marginTop: 5 }}>or sign in with</Text>
-                <TouchableOpacity style={{ backgroundColor: "#F4F4F4", width: "13%", height: "6%", alignSelf: "center", marginTop: 10 }}>
-                    <Text style={{ textAlign: "center" }}>🔵🟢🟡🔴</Text>
                 </TouchableOpacity>
                 <View style={{ flexDirection: "row", justifyContent: "center" }}>
                     <Text style={{ color: "#3b3b3bff", fontWeight: "300", fontSize: 11, textAlign: "center", marginTop: 10 }}>Don’t have an account? </Text>

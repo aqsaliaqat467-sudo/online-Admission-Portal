@@ -1,8 +1,9 @@
+import * as ImagePicker from 'expo-image-picker';
 import { router } from 'expo-router';
 import { signOut } from 'firebase/auth';
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
 import React, { useEffect, useState } from 'react';
-import { ActivityIndicator, Alert, Image, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, Alert, Image, Platform, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { useDispatch, useSelector } from 'react-redux';
 import { auth, db } from '../../Firebase';
@@ -182,6 +183,15 @@ const Profile12 = ({ navigation }) => {
 
     const handleImagePicker = async () => {
         try {
+            // Request camera roll permissions
+            if (Platform.OS !== 'web') {
+                const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+                if (status !== 'granted') {
+                    Alert.alert('Permission required', 'Please allow access to your photos to upload a profile picture.');
+                    return;
+                }
+            }
+
             const result = await ImagePicker.launchImageLibraryAsync({
                 mediaTypes: ImagePicker.MediaTypeOptions.Images,
                 allowsEditing: true,
@@ -189,15 +199,20 @@ const Profile12 = ({ navigation }) => {
                 quality: 0.8,
             });
 
-            if (!result.canceled) {
-                const imageUri = result.assets[0].uri;
+            if (!result.canceled && result.assets && result.assets.length > 0) {
                 setLoading(true);
+                const imageUri = result.assets[0].uri;
                 const uploadedImageUrl = await uploadImageToCloudinary(imageUri);
-                handleInputChange('imageUrl', uploadedImageUrl);
+                if (uploadedImageUrl) {
+                    handleInputChange('imageUrl', uploadedImageUrl);
+                    Alert.alert('Success', 'Profile picture updated successfully!');
+                } else {
+                    throw new Error('Failed to upload image');
+                }
             }
         } catch (error) {
             console.error('Error picking image:', error);
-            Alert.alert('Error', 'Failed to upload image');
+            Alert.alert('Error', 'Failed to upload image. Please try again.');
         } finally {
             setLoading(false);
         }
@@ -241,13 +256,17 @@ const Profile12 = ({ navigation }) => {
                     </View>
 
                     <View style={styles.inputGroup}>
-                        <Text style={styles.label}>Email</Text>
+                        <Text style={styles.label}>Email Address</Text>
                         <TextInput
                             value={formData.email}
                             onChangeText={(text) => handleInputChange('email', text)}
-                            style={[styles.input, { color: '#6c757d' }]}
-                            editable={false}
-                            selectTextOnFocus={false}
+                            style={[styles.input, { color: '#000' }]}
+                            keyboardType="email-address"
+                            autoCapitalize="none"
+                            autoCompleteType="email"
+                            textContentType="emailAddress"
+                            placeholder="Enter your email"
+                            placeholderTextColor="#999"
                         />
                     </View>
 
@@ -305,11 +324,11 @@ const Profile12 = ({ navigation }) => {
 
 const styles = {
     profileContainer: {
-        backgroundColor: '#f8f9fa',
-        borderRadius: 15,
+        backgroundColor: '#ffffff',
+        borderRadius: 12,
         padding: 20,
         marginBottom: 20,
-        shadowColor: "#000",
+        shadowColor: '#000',
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.1,
         shadowRadius: 4,
@@ -321,20 +340,16 @@ const styles = {
     },
     avatarContainer: {
         position: 'relative',
-        marginBottom: 15
-    },
-    avatarImage: {
-        width: 120,
-        height: 120,
-        borderRadius: 60
-    },
-    avatarPlaceholder: {
+        marginBottom: 15,
         width: 120,
         height: 120,
         borderRadius: 60,
-        backgroundColor: '#e9ecef',
+        backgroundColor: '#f0f0f0',
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        alignSelf: 'center',
+        borderWidth: 3,
+        borderColor: '#0b3c66',
     },
     cameraIcon: {
         position: 'absolute',
@@ -342,44 +357,51 @@ const styles = {
         bottom: 5,
         backgroundColor: '#0b3c66',
         borderRadius: 15,
-        width: 30,
-        height: 30,
+        padding: 5,
+        zIndex: 10,
+    },
+    avatarImage: {
+        width: '100%',
+        height: '100%',
+        borderRadius: 60,
+    },
+    avatarPlaceholder: {
+        width: '100%',
+        height: '100%',
+        borderRadius: 60,
         justifyContent: 'center',
-        alignItems: 'center'
-    },
-    userName: {
-        fontSize: 22,
-        fontWeight: 'bold',
-        color: '#212529',
-        marginTop: 10
-    },
-    userRole: {
-        color: '#6c757d',
-        marginTop: 5
-    },
-    formContainer: {
-        marginTop: 15
+        alignItems: 'center',
+        backgroundColor: '#e9ecef',
     },
     inputGroup: {
-        marginBottom: 15
+        marginBottom: 15,
     },
     label: {
-        color: '#6c757d',
         fontSize: 14,
-        marginBottom: 5
+        color: '#495057',
+        marginBottom: 5,
+        fontWeight: '500',
     },
     input: {
-        borderBottomWidth: 1,
-        borderColor: '#ced4da',
-        paddingVertical: 8,
+        borderWidth: 1,
+        borderColor: '#e0e0e0',
+        padding: 12,
+        borderRadius: 8,
         fontSize: 16,
-        color: '#212529'
+        backgroundColor: '#fff',
+        color: '#333',
     },
-    infoGroup: {
-        marginTop: 10,
-        paddingTop: 10,
-        borderTopWidth: 1,
-        borderTopColor: '#e9ecef'
+    button: {
+        backgroundColor: '#0b3c66',
+        padding: 15,
+        borderRadius: 8,
+        alignItems: 'center',
+        marginTop: 20,
+    },
+    buttonText: {
+        color: '#fff',
+        fontSize: 16,
+        fontWeight: '600',
     },
     infoLabel: {
         color: '#6c757d',

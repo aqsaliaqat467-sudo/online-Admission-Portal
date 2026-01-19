@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
-import { View, Text, ScrollView, TouchableOpacity, Image, StyleSheet, ActivityIndicator } from "react-native";
-import { collection, getDocs, query, orderBy, where } from 'firebase/firestore';
-import { db } from '../../Firebase';
 import { Ionicons, MaterialIcons } from '@expo/vector-icons';
+import { collection, getDocs, orderBy, query, where } from 'firebase/firestore';
+import React, { useEffect, useState } from "react";
+import { ActivityIndicator, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useSelector } from 'react-redux';
+import { db } from '../../Firebase';
 
 const Stories = ({ navigation, route }) => {
     const [stories, setStories] = useState([]);
@@ -169,22 +169,6 @@ const Stories = ({ navigation, route }) => {
 
                             {/* Story Text */}
                             <Text style={styles.storyText}>{story.storyText}</Text>
-
-                            {/* Timestamps Footer */}
-                            <View style={styles.timestampsContainer}>
-                                <View style={styles.timestampItem}>
-                                    <Ionicons name="calendar-outline" size={14} color="#666" />
-                                    <Text style={styles.timestampLabel}>Created: </Text>
-                                    <Text style={styles.timestampValue}>{formatDate(story.createdAt)}</Text>
-                                </View>
-                                {story.updatedAt && story.updatedAt !== story.createdAt && (
-                                    <View style={styles.timestampItem}>
-                                        <Ionicons name="refresh-outline" size={14} color="#666" />
-                                        <Text style={styles.timestampLabel}>Updated: </Text>
-                                        <Text style={styles.timestampValue}>{formatDate(story.updatedAt)}</Text>
-                                    </View>
-                                )}
-                            </View>
 
                             {/* Action Buttons */}
                             <View style={styles.actionButtons}>
@@ -367,12 +351,6 @@ const styles = StyleSheet.create({
         lineHeight: 24,
         marginBottom: 15,
         textAlign: 'justify',
-    },
-    timestampsContainer: {
-        backgroundColor: '#f8f9fa',
-        padding: 12,
-        borderRadius: 8,
-        marginBottom: 15,
     },
     timestampItem: {
         flexDirection: 'row',
