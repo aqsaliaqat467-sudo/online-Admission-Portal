@@ -17,13 +17,13 @@ const AdmissionNew = ({ navigation, route }) => {
     const user = useSelector((state) => state.home.user);
 
     // 🔹 Personal Information
-    const [firstName, setFirstName] = useState('Ahmed');
-    const [lastName, setLastName] = useState('Khan');
-    const [email, setEmail] = useState('ahmed.khan@example.com');
-    const [phone, setPhone] = useState('0300-1234567');
-    const [dateOfBirth, setDateOfBirth] = useState('15/05/2002');
-    const [gender, setGender] = useState('Male');
-    const [nationality, setNationality] = useState('Pakistani');
+    const [firstName, setFirstName] = useState(user?.fName || '');
+    const [lastName, setLastName] = useState(user?.lName || '');
+    const [email, setEmail] = useState(user?.email || '');
+    const [phone, setPhone] = useState(user?.mobile || '');
+    const [dateOfBirth, setDateOfBirth] = useState(user?.dateOfBirth || '');
+    const [gender, setGender] = useState(user?.gender || 'Male');
+    const [nationality, setNationality] = useState(user?.nationality || 'Pakistani');
 
     // 🔹 Previous Education
     const educationLevels = ['Matric', 'Intermediate', 'A-Levels', 'Other'];
@@ -81,24 +81,24 @@ const AdmissionNew = ({ navigation, route }) => {
     };
 
     // 🔹 Address Details
-    const [address, setAddress] = useState('House 123, Street 45, Model Town');
-    const [city, setCity] = useState('Lahore');
-    const [state, setState] = useState('Punjab');
-    const [country, setCountry] = useState('Pakistan');
-    const [postalCode, setPostalCode] = useState('54000');
+    const [address, setAddress] = useState('');
+    const [city, setCity] = useState('');
+    const [state, setState] = useState('');
+    const [country, setCountry] = useState('');
+    const [postalCode, setPostalCode] = useState('');
 
     // 🔹 Emergency Contact
-    const [emergencyContactName, setEmergencyContactName] = useState('Muhammad Khan');
-    const [emergencyContactPhone, setEmergencyContactPhone] = useState('0321-9876543');
-    const [emergencyContactRelation, setEmergencyContactRelation] = useState('Father');
+    const [emergencyContactName, setEmergencyContactName] = useState('');
+    const [emergencyContactPhone, setEmergencyContactPhone] = useState('');
+    const [emergencyContactRelation, setEmergencyContactRelation] = useState('');
 
     // 🔹 File Uploads
     const [photoFile, setPhotoFile] = useState('');
     const [documentsFile, setDocumentsFile] = useState('');
 
     // 🔹 Additional Info
-    const [motivation, setMotivation] = useState('I am passionate about pursuing higher education in this field and believe this program will help me achieve my career goals. I have always been interested in this subject and want to contribute meaningfully to this industry.');
-    const [additionalInfo, setAdditionalInfo] = useState('I have participated in various extracurricular activities and volunteer work. I am a dedicated student with strong communication skills and a willingness to learn.');
+    const [motivation, setMotivation] = useState('');
+    const [additionalInfo, setAdditionalInfo] = useState('');
 
     // Loading state
     const [submitting, setSubmitting] = useState(false);

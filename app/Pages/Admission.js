@@ -11,27 +11,27 @@ const Admission = ({ navigation, route }) => {
     const course = route?.params?.course;
     const college = route?.params?.college;
 
-    const [date, setDate] = useState("12/10/2025");
-    const [program, setProgram] = useState("Computer Science");
-    const [name, setName] = useState("Aqsa Liaqat");
+    const [date, setDate] = useState("");
+    const [program, setProgram] = useState("");
+    const [name, setName] = useState("");
     const [cnic, setCnic] = useState("");
     const [fatherCnic, setFatherCnic] = useState("");
-    const [dob, setDob] = useState("04/05/2002");
-    const [fatherOccupation, setFatherOccupation] = useState("Civil Engineer");
-    const [maritalStatus, setMaritalStatus] = useState("Single");
-    const [religion, setReligion] = useState("Islam");
-    const [permanentAddress, setPermanentAddress] = useState("Wapda scarp colony");
+    const [dob, setDob] = useState("");
+    const [fatherOccupation, setFatherOccupation] = useState("");
+    const [maritalStatus, setMaritalStatus] = useState("");
+    const [religion, setReligion] = useState("");
+    const [permanentAddress, setPermanentAddress] = useState("");
     const [postalAddress, setPostalAddress] = useState("");
-    const [cellPhone, setCellPhone] = useState("03006098401");
-    const [resPhone, setResPhone] = useState("03006098401");
-    const [matricObtained, setMatricObtained] = useState("800");
-    const [matricTotal, setMatricTotal] = useState("1100");
-    const [matricPercent, setMatricPercent] = useState("80%");
-    const [fscObtained, setFscObtained] = useState("900");
-    const [fscTotal, setFscTotal] = useState("1100");
-    const [fscPercent, setFscPercent] = useState("85%");
-    const [subjects, setSubjects] = useState("Computer Science");
-    const [activities, setActivities] = useState("Reading Books");
+    const [cellPhone, setCellPhone] = useState("");
+    const [resPhone, setResPhone] = useState("");
+    const [matricObtained, setMatricObtained] = useState("");
+    const [matricTotal, setMatricTotal] = useState("");
+    const [matricPercent, setMatricPercent] = useState("");
+    const [fscObtained, setFscObtained] = useState("");
+    const [fscTotal, setFscTotal] = useState("");
+    const [fscPercent, setFscPercent] = useState("");
+    const [subjects, setSubjects] = useState("");
+    const [activities, setActivities] = useState("");
     const [imageUrl, setImageUrl] = useState("");
     const handleSubmit = async () => {
 
