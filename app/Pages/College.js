@@ -103,11 +103,6 @@ const College = ({ navigation, route }) => {
                         )}
                         <View style={styles.headerInfo}>
                             <Text style={styles.collegeName}>{college.collegeName}</Text>
-                            <View style={styles.typeBadge}>
-                                <Text style={styles.typeText}>
-                                    {college.type === 'public' ? '🏛️ Public' : '🏢 Private'}
-                                </Text>
-                            </View>
                         </View>
                     </View>
                 </View>
@@ -337,7 +332,7 @@ const styles = StyleSheet.create({
     },
     header: {
         backgroundColor: '#fff',
-        padding: 20,
+        padding: 5,
         borderBottomLeftRadius: 25,
         borderBottomRightRadius: 25,
         shadowColor: '#000',

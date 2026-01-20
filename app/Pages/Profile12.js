@@ -241,7 +241,7 @@ const Profile12 = ({ navigation }) => {
                     </TouchableOpacity>
                     
                     <Text style={styles.userName}>{formData.name || 'No Name'}</Text>
-                    <Text style={styles.userRole}>{formData.role || 'User'}</Text>
+
                 </View>
 
                 <View style={styles.formContainer}>
@@ -287,15 +287,6 @@ const Profile12 = ({ navigation }) => {
                             <Text>{formData.role}</Text>
                         </View>
                     </View>
-
-                    {currentUser?.createdAt && (
-                        <View style={styles.infoGroup}>
-                            <Text style={styles.infoLabel}>Member Since</Text>
-                            <Text style={styles.infoText}>
-                                {formatDate(currentUser.createdAt)}
-                            </Text>
-                        </View>
-                    )}
                 </View>
             </View>
 

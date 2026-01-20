@@ -73,12 +73,6 @@ const Clgprofile = ({ route, navigation }) => {
                 )}
                 <Text style={styles.collegeName}>{college.collegeName}</Text>
                 
-                {/* Status Badge */}
-                <View style={[styles.statusBadge, college.status === 'approved' ? styles.approvedBadge : styles.pendingBadge]}>
-                    <Text style={styles.statusText}>
-                        {college.status === 'approved' ? '✓ Approved' : '⏳ Pending'}
-                    </Text>
-                </View>
 
                 {/* Type Badge */}
                 <View style={styles.typeBadge}>

@@ -83,7 +83,7 @@ const Home = ({ navigation }) => {
                             }
                         >
                             <Text style={{ fontSize: 18, fontWeight: 'bold', marginLeft: 20, marginTop: 20, marginBottom: 10 }}>
-                                Approved Colleges ({data.length})
+                                Colleges ({data.length})
                             </Text>
                             {data?.map((item, index) => (
                                 <TouchableOpacity 
@@ -104,11 +104,6 @@ const Home = ({ navigation }) => {
                                             <Text style={styles.collegeName} numberOfLines={2}>
                                                 {item.collegeName}
                                             </Text>
-                                            <View style={styles.typeBadge}>
-                                                <Text style={styles.typeText}>
-                                                    {item.type === 'public' ? '🏛️ Public' : '🏢 Private'}
-                                                </Text>
-                                            </View>
                                         </View>
                                     </View>
 
